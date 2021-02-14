@@ -2,11 +2,11 @@ const Router = require("express");
 const router = new Router();
 const discountController = require("../controller/discount_controller");
 
-router.post("/discount", discountController.createDiscount);
-router.get("/discounts", discountController.getDiscounts);
-router.get("discount/:id", discountController.getDiscountForProduct);
-router.put("/discount/:id", discountController.updateDiscount);
-router.delete("/discount/:id", discountController.deleteDiscount);
+router.get("/discounts", discountController.all);
+router.get("discount/:id", discountController.one);
+router.post("/discount", discountController.create);
+router.put("/discount/:id", discountController.update);
+router.delete("/discount/:id", discountController.delete);
 
 
 module.exports = router;
