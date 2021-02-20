@@ -1,7 +1,7 @@
-const db = require("../db");
 const productModels = require("../models/products_models");
 
 exports.all = function(req, res) {
+    if(!req.body) return res.sendStatus(400);
     productModels.all(function(err, docs) {
         if (err) {
             console.log(err);
@@ -12,7 +12,9 @@ exports.all = function(req, res) {
 };
 
 exports.one = function(req, res) {
-    productModels.one(req.params.id, function(err, doc) {
+    if(!req.body) return res.sendStatus(400);
+    const id = {id: req.params.id};
+    productModels.one(id, function(err, doc) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -22,6 +24,7 @@ exports.one = function(req, res) {
 };
 
 exports.create = function(req, res) {
+    if(!req.body) return res.sendStatus(400);
     const product = {
         product_name: req.body.product_name,
         price: req.body.price,
@@ -32,27 +35,30 @@ exports.create = function(req, res) {
             console.log(err);
             return res.sendStatus(500);
         }
-        res.json(product);
+        res.sendStatus(200);
     });
 };
 
 exports.update = function(req, res) {
+    if(!req.body) return res.sendStatus(400);
     const product = {
         product_name: req.body.product_name,
         price: req.body.price,
         product_description: req.body.product_description
     }
-    productModels.update(req.params.id, product, function(err, result) {
+    const id = {id: req.params.id};
+    productModels.update(id, product, function(err, result) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        res.json(result);
+        res.sendStatus(200);
     });
 };
 
 exports.delete = function(req, res) {
-    const id = req.params.id;
+    if(!req.body) return res.sendStatus(400);
+    const id = {id: req.params.id};
     productModels.delete(id, function(err, result) {
         if (err) {
             console.log(err);

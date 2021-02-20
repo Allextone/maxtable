@@ -1,7 +1,7 @@
-const db = require("../db");
 const discountModels = require("../models/discounts_models");
 
 exports.all = function(req, res) {
+    if(!req.body) return res.sendStatus(400);
     discountModels.all(function(err, docs) {
         if (err) {
             console.log(err);
@@ -12,7 +12,9 @@ exports.all = function(req, res) {
 };
 
 exports.one = function(req, res) {
-    discountModels.one(req.params.id, function(err, doc) {
+    if(!req.body) return res.sendStatus(400);
+    const id = {id: req.params.id};
+    discountModels.one(id, function(err, doc) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
@@ -22,6 +24,7 @@ exports.one = function(req, res) {
 };
 
 exports.create = function(req, res) {
+    if(!req.body) return res.sendStatus(400);
     const discount = {
         product_name: req.body.product_name,
         discount: req.body.discount,
@@ -34,35 +37,38 @@ exports.create = function(req, res) {
             console.log(err);
             return res.sendStatus(500);
         }
-        res.json(discount);
+        res.sendStatus(200);
     });
 };
 
 exports.update = function(req, res) {
+    if(!req.body) return res.sendStatus(400);
     const discount = {
         product_name: req.body.product_name,
         discount: req.body.discount,
         start_discount: req.body.start_discount,
         end_discount: req.body.end_discount,
         product_id: req.body.product_id
-    }
-    discountModels.update(req.params.id, discount, function(err, result) {
+    };
+    const id = {id: req.params.id};
+    discountModels.update(id, discount, function(err, result) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        res.json(result);
+        res.sendStatus(200);
     });
 };
 
 exports.delete = function(req, res) {
-    const id = req.params.id;
+    if(!req.body) return res.sendStatus(400);
+    const id = {id: req.params.id};
     discountModels.delete(id, function(err, result) {
         if (err) {
             console.log(err);
             return res.sendStatus(500);
         }
-        res.json(result);
+        res.sendStatus(200);
     })
 };
 
